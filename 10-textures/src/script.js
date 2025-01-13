@@ -1,18 +1,34 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import gsap from "gsap";
-import GUI from "lil-gui";
 
-//Debug
+//Textures
 
-const gui = new GUI({
-  width: 300,
-  title: "My GUI",
-  closeFolders: true,
-});
-gui.close();
-const debugObject = {};
+const loadingManager = new THREE.LoadingManager();
 
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+loadingManager.onStart = () => {
+  console.log("onStart");
+};
+loadingManager.onLoaded = () => {
+  console.log("onLoaded");
+};
+loadingManager.onProgress = () => {
+  console.log("onProgress");
+};
+loadingManager.onError = () => {
+  console.log("onError");
+};
+const colorTexture = textureLoader.load("/textures/door/color.jpg");
+const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+const heightTexture = textureLoader.load("/textures/door/height.jpg");
+const normalTexture = textureLoader.load("/textures/door/normal.jpg");
+const ambientOcclusionTexture = textureLoader.load(
+  "/textures/door/ambientOcclusion.jpg"
+);
+const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
+const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+colorTexture.colorSpace = THREE.SRGBColorSpace;
 /**
  * Base
  */
@@ -25,39 +41,11 @@ const scene = new THREE.Scene();
 /**
  * Object
  */
-
-debugObject.color = "#136313";
-
-const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
-const material = new THREE.MeshBasicMaterial({ color: debugObject.color });
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ map: colorTexture });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
-debugObject.spin = () => {
-  gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 });
-};
-
-gui.add(mesh.position, "y").min(-3).max(3).step(0.01).name("elevation");
-gui.add(mesh, "visible");
-gui.add(mesh.material, "wireframe");
-gui.addColor(debugObject, "color").onChange((value) => {
-  material.color.set(value);
-});
-gui.add(debugObject, "spin");
-
-debugObject.subDivisions = 2;
-
-const cubeTweaks = gui.addFolder("Folder 1");
-cubeTweaks
-  .add(debugObject, "subDivisions")
-  .min(1)
-  .max(20)
-  .step(1)
-  .onFinishChange((value) => {
-    // console.log(value);
-    const newGeometry = new THREE.BoxGeometry(1, 1, 1, value, value, value);
-    mesh.geometry = newGeometry;
-  });
 /**
  * Sizes
  */
@@ -92,7 +80,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.x = 1;
 camera.position.y = 1;
-camera.position.z = 2;
+camera.position.z = 1;
 scene.add(camera);
 
 // Controls
