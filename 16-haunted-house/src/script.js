@@ -71,6 +71,18 @@ const wallsTextureARM = textureLoader.load(
 const wallsTextureNormal = textureLoader.load(
   "wall/castle_brick_broken_06_1k/castle_brick_broken_06_nor_gl_1k.jpg"
 );
+
+//roof
+const roofTextureColor = textureLoader.load(
+  "roof/roof_slates_02_1k/roof_slates_02_diff_1k.jpg"
+);
+roofTextureColor.colorSpace = THREE.SRGBColorSpace;
+const roofTextureARM = textureLoader.load(
+  "roof/roof_slates_02_1k/roof_slates_02_arm_1k.jpg"
+);
+const roofTextureNormal = textureLoader.load(
+  "roof/roof_slates_02_1k/roof_slates_02_nor_gl_1k.jpg"
+);
 /**
  * House
  */
@@ -116,7 +128,13 @@ walls.position.y = 1.25;
 //roof
 const roof = new THREE.Mesh(
   new THREE.ConeGeometry(3.2, 1, 4),
-  new THREE.MeshStandardMaterial({ color: "#b35f45" })
+  new THREE.MeshStandardMaterial({
+    map: roofTextureColor,
+    aoMap: roofTextureARM,
+    roughnessMap: roofTextureARM,
+    metalnessMap: roofTextureARM,
+    normalMap: roofTextureNormal,
+  })
 );
 roof.position.y = 2.5 + 0.5;
 roof.rotation.y = Math.PI * 0.25;
