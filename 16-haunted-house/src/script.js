@@ -20,6 +20,8 @@ scene.add(axesHelper);
 
 /** Textures */
 const textureLoader = new THREE.TextureLoader();
+
+//Floor
 const floorAlphaMap = textureLoader.load("floor/alpha.jpg");
 /* const growthValue = 1;
 floorAlphaMap.repeat.set(1 / growthValue, 1 / growthValue);
@@ -56,6 +58,19 @@ const floorTextureDisplacement = textureLoader.load(
 floorTextureDisplacement.repeat.set(8, 8);
 floorTextureDisplacement.wrapS = THREE.RepeatWrapping;
 floorTextureDisplacement.wrapT = THREE.RepeatWrapping;
+
+// walls
+
+const wallsTextureColor = textureLoader.load(
+  "wall/castle_brick_broken_06_1k/castle_brick_broken_06_diff_1k.jpg"
+);
+wallsTextureColor.colorSpace = THREE.SRGBColorSpace;
+const wallsTextureARM = textureLoader.load(
+  "wall/castle_brick_broken_06_1k/castle_brick_broken_06_arm_1k.jpg"
+);
+const wallsTextureNormal = textureLoader.load(
+  "wall/castle_brick_broken_06_1k/castle_brick_broken_06_nor_gl_1k.jpg"
+);
 /**
  * House
  */
@@ -89,7 +104,13 @@ const house = new THREE.Group();
 //Walls
 const walls = new THREE.Mesh(
   new THREE.BoxGeometry(4, 2.5, 4),
-  new THREE.MeshStandardMaterial({ color: "#ac8e82" })
+  new THREE.MeshStandardMaterial({
+    map: wallsTextureColor,
+    aoMap: wallsTextureARM,
+    roughnessMap: wallsTextureARM,
+    metalnessMap: wallsTextureARM,
+    normalMap: wallsTextureNormal,
+  })
 );
 walls.position.y = 1.25;
 //roof
