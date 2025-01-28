@@ -77,12 +77,21 @@ const roofTextureColor = textureLoader.load(
   "roof/roof_slates_02_1k/roof_slates_02_diff_1k.jpg"
 );
 roofTextureColor.colorSpace = THREE.SRGBColorSpace;
+
 const roofTextureARM = textureLoader.load(
   "roof/roof_slates_02_1k/roof_slates_02_arm_1k.jpg"
 );
+
 const roofTextureNormal = textureLoader.load(
   "roof/roof_slates_02_1k/roof_slates_02_nor_gl_1k.jpg"
 );
+
+roofTextureColor.repeat.set(3, 1);
+roofTextureNormal.repeat.set(3, 1);
+roofTextureARM.repeat.set(3, 1);
+roofTextureColor.wrapS = THREE.RepeatWrapping;
+roofTextureNormal.wrapS = THREE.RepeatWrapping;
+roofTextureARM.wrapS = THREE.RepeatWrapping;
 /**
  * House
  */
