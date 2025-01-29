@@ -413,6 +413,11 @@ sky.material.uniforms["rayleigh"].value = 3;
 sky.material.uniforms["mieCoefficient"].value = 0.1;
 sky.material.uniforms["mieDirectionalG"].value = 0.95;
 sky.material.uniforms["sunPosition"].value.set(0.3, -0.038, -0.95);
+
+/*Fog */
+//scene.fog = new THREE.Fog("#02343f", 1, 15);
+scene.fog = new THREE.FogExp2("#02343f", 0.1);
+
 /**
  * Animate
  */
