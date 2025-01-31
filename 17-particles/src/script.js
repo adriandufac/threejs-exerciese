@@ -44,7 +44,7 @@ const particlesGeometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10);
 
 //material
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.02,
+  size: 0.04,
   sizeAttenuation: true, // to create perspective
 });
 
