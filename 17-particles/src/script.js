@@ -51,8 +51,6 @@ const particlesMaterial = new THREE.PointsMaterial({
   size: 0.04,
   sizeAttenuation: true, // to create perspective
   alphaMap: particleTexture,
-  // alphaTest: 0.001,
-  //alphaTest: false,
   depthWrite: false,
   blending: THREE.AdditiveBlending,
   transparent: true,
