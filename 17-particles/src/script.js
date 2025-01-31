@@ -18,6 +18,7 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const particleTexture = textureLoader.load("/textures/particles/2.png");
 
 /**
  * Test cube
@@ -30,22 +31,32 @@ scene.add(cube) */
 
 /* particules */
 //Geometry
-const count = 5000;
+const count = 10000;
 const positionsArray = new Float32Array(count * 3);
+const colorsArray = new Float32Array(count * 3);
 for (let i = 0; i < count * 3; i++) {
   positionsArray[i] = (Math.random() - 0.5) * 10;
+  colorsArray[i] = Math.random();
 }
 const particlesGeometry2 = new THREE.BufferGeometry();
 
 const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+const colorAttribute = new THREE.BufferAttribute(colorsArray, 3);
 particlesGeometry2.setAttribute("position", positionsAttribute);
-
+particlesGeometry2.setAttribute("color", colorAttribute);
 const particlesGeometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10);
 
 //material
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.04,
   sizeAttenuation: true, // to create perspective
+  alphaMap: particleTexture,
+  // alphaTest: 0.001,
+  //alphaTest: false,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  transparent: true,
+  vertexColors: true,
 });
 
 //points
@@ -107,6 +118,18 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  //Update particles
+  //particles.rotation.y = elapsedTime * 0.05;
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+    const x = particlesGeometry2.attributes.position.array[i3];
+    particlesGeometry2.attributes.position.array[i3 + 1] = Math.sin(
+      elapsedTime + x
+    );
+    // many particles to updates, bad idea we will learn better way latter (custom sahadders)
+  }
+  particlesGeometry2.attributes.position.needsUpdate = true;
 
   // Update controls
   controls.update();
