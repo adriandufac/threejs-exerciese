@@ -57,6 +57,33 @@ scene.add(mesh1, mesh2, mesh3);
 
 const sectionMeshes = [mesh1, mesh2, mesh3];
 
+/**Particules 
+ * 
+*/
+
+const particulesCount = 200;
+const positions = new Float32Array(particulesCount * 3);
+
+for (let i = 0; i < particulesCount; i++) {
+  const i3= i * 3;
+  positions[i3 + 0] = (Math.random() - 0.5) * 10;
+  positions[i3 + 1] = (Math.random() - 0.5) * 10;
+  positions[i3 + 2] = (Math.random() - 0.5) * 10;
+}
+
+const particulesGeometry = new THREE.BufferGeometry();
+particulesGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+//material
+const particulesMaterial = new THREE.PointsMaterial({
+  color : parameters.materialColor,
+  sizeAttenuation : true,
+  size : 0.03,
+});
+
+//points
+const particules = new THREE.Points(particulesGeometry, particulesMaterial);
+scene.add(particules);
 /**
  * Lights
  */
