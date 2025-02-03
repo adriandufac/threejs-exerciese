@@ -149,9 +149,9 @@ const tick = () => {
   const parallaxX = cursor.x;
   const parallaxY = cursor.y;
   cameraGroup.position.x +=
-    (parallaxX - cameraGroup.position.x) * deltaTIme * 2;
+    (parallaxX - cameraGroup.position.x) * deltaTIme * 3;
   cameraGroup.position.y +=
-    (parallaxY - cameraGroup.position.y) * deltaTIme * 2;
+    (parallaxY - cameraGroup.position.y) * deltaTIme * 3;
   // Render
   renderer.render(scene, camera);
 
