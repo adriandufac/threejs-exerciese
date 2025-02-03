@@ -24,6 +24,7 @@ parameters.size = 0.02;
 parameters.radius = 5;
 parameters.branches = 3;
 parameters.spin = 1;
+parameters.randomness = 0.2;
 
 let particlesGeometry = null;
 let particlesMaterial = null;
@@ -47,9 +48,14 @@ const generateGalaxy = () => {
     // cos(branchAngle) = x/radius
     // sin(branchAngle) = y/radius
     const spinAngle = parameters.spin * radius;
-    positionsArray[i3 + 0] = radius * Math.cos(branchAngle + spinAngle);
-    positionsArray[i3 + 1] = 0;
-    positionsArray[i3 + 2] = radius * Math.sin(branchAngle + spinAngle);
+    const randomX = (Math.random() - 0.5) * parameters.randomness;
+    const randomY = (Math.random() - 0.5) * parameters.randomness;
+    const randomZ = (Math.random() - 0.5) * parameters.randomness;
+    positionsArray[i3 + 0] =
+      radius * Math.cos(branchAngle + spinAngle) + randomX;
+    positionsArray[i3 + 1] = randomY;
+    positionsArray[i3 + 2] =
+      radius * Math.sin(branchAngle + spinAngle) + randomZ;
   }
   particlesGeometry = new THREE.BufferGeometry();
   particlesGeometry.setAttribute(
@@ -104,6 +110,13 @@ gui
   .add(parameters, "spin")
   .min(-5)
   .max(5)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "randomness")
+  .min(0)
+  .max(2)
   .step(0.001)
   .onFinishChange(generateGalaxy);
 /**
