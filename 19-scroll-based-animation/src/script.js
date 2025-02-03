@@ -132,10 +132,13 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Animate
  */
 const clock = new THREE.Clock();
+let previousTime = 0;
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-
+  const deltaTIme = elapsedTime - previousTime;
+  previousTime = elapsedTime;
+  //const deltaTime = clock.getDelta();
   // animate meshes
   for (const mesh of sectionMeshes) {
     mesh.rotation.x = elapsedTime * 0.1;
@@ -145,8 +148,10 @@ const tick = () => {
   camera.position.y = (-lastScrollY / sizes.height) * objectsDistance;
   const parallaxX = cursor.x;
   const parallaxY = cursor.y;
-  cameraGroup.position.x = parallaxX;
-  cameraGroup.position.y = parallaxY;
+  cameraGroup.position.x +=
+    (parallaxX - cameraGroup.position.x) * deltaTIme * 2;
+  cameraGroup.position.y +=
+    (parallaxY - cameraGroup.position.y) * deltaTIme * 2;
   // Render
   renderer.render(scene, camera);
 
