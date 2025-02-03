@@ -49,6 +49,10 @@ mesh1.position.y = -objectsDistance * 0;
 mesh2.position.y = -objectsDistance * 1;
 mesh3.position.y = -objectsDistance * 2;
 
+mesh1.position.x = 2;
+mesh2.position.x = -2;
+mesh3.position.x = 2;
+
 scene.add(mesh1, mesh2, mesh3);
 
 const sectionMeshes = [mesh1, mesh2, mesh3];
@@ -82,6 +86,14 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+const cursor = {};
+cursor.x = 0;
+cursor.y = 0;
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / sizes.width - 0.5;
+  cursor.y = -(event.clientY / sizes.height - 0.5);
+  console.log(cursor);
+});
 
 let lastScrollY = window.scrollY;
 
@@ -92,6 +104,10 @@ window.addEventListener("scroll", () => {
 /**
  * Camera
  */
+
+//camera group
+const cameraGroup = new THREE.Group();
+scene.add(cameraGroup);
 // Base camera
 const camera = new THREE.PerspectiveCamera(
   35,
@@ -100,7 +116,7 @@ const camera = new THREE.PerspectiveCamera(
   100
 );
 camera.position.z = 6;
-scene.add(camera);
+cameraGroup.add(camera);
 
 /**
  * Renderer
@@ -127,6 +143,10 @@ const tick = () => {
   }
   // camera position
   camera.position.y = (-lastScrollY / sizes.height) * objectsDistance;
+  const parallaxX = cursor.x;
+  const parallaxY = cursor.y;
+  cameraGroup.position.x = parallaxX;
+  cameraGroup.position.y = parallaxY;
   // Render
   renderer.render(scene, camera);
 
