@@ -21,6 +21,9 @@ const scene = new THREE.Scene();
 const parameters = {};
 parameters.count = 1000;
 parameters.size = 0.02;
+parameters.radius = 5;
+parameters.branches = 3;
+parameters.spin = 1;
 
 let particlesGeometry = null;
 let particlesMaterial = null;
@@ -35,11 +38,18 @@ const generateGalaxy = () => {
   }
 
   const positionsArray = new Float32Array(parameters.count * 3);
-  for (let i = 0; i < parameters.count; i += 3) {
+  for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3;
-    positionsArray[i3 + 0] = Math.random() * 3;
-    positionsArray[i3 + 1] = Math.random() * 3;
-    positionsArray[i3 + 2] = Math.random() * 3;
+
+    const radius = Math.random() * parameters.radius;
+    const branchAngle =
+      ((i % parameters.branches) / parameters.branches) * Math.PI * 2; // (/parameters.branches) to get a value between 0 and 1 and * Math.PI * 2 to get a value between 0 and 2PI
+    // cos(branchAngle) = x/radius
+    // sin(branchAngle) = y/radius
+    const spinAngle = parameters.spin * radius;
+    positionsArray[i3 + 0] = radius * Math.cos(branchAngle + spinAngle);
+    positionsArray[i3 + 1] = 0;
+    positionsArray[i3 + 2] = radius * Math.sin(branchAngle + spinAngle);
   }
   particlesGeometry = new THREE.BufferGeometry();
   particlesGeometry.setAttribute(
@@ -73,6 +83,27 @@ gui
   .add(parameters, "size")
   .min(0.001)
   .max(0.1)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "radius")
+  .min(0.01)
+  .max(20)
+  .step(0.01)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "branches")
+  .min(2)
+  .max(20)
+  .step(1)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "spin")
+  .min(-5)
+  .max(5)
   .step(0.001)
   .onFinishChange(generateGalaxy);
 /**
