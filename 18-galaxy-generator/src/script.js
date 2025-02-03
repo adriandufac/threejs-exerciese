@@ -49,7 +49,10 @@ const generateGalaxy = () => {
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3;
 
-    const radius = Math.random() * parameters.radius;
+    const radius =
+      Math.pow(Math.random(), parameters.randomnessPower) * parameters.radius;
+    //const radius = Math.random() * parameters.radius;
+
     const colorAlpha = radius / parameters.radius;
     const mixedColor = insideColor.clone().lerp(outsideColor, colorAlpha);
 
