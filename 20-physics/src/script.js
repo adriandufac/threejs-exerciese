@@ -34,6 +34,19 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
+/**Sound */
+const hitSound = new Audio("/sounds/hit.mp3");
+
+const playHitSound = (collision) => {
+  const impactStrength = collision.contact.getImpactVelocityAlongNormal();
+
+  if (impactStrength > 2) {
+    hitSound.volume = Math.random();
+    hitSound.currentTime = 0;
+    hitSound.play();
+  }
+};
+
 /**
  * Textures
  */
@@ -55,7 +68,8 @@ const environmentMapTexture = cubeTextureLoader.load([
 //world
 const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0);
-
+world.broadphase = new CANNON.SAPBroadphase(world); // better performances, can bug if some objects move very fast
+world.allowSleep = true; // allow to stop testing objects that are not moving, improve a lot the performances
 //Materials
 const concreteMaterial = new CANNON.Material("concrete");
 const plasticMaterial = new CANNON.Material("plastic");
@@ -235,6 +249,7 @@ const createSphere = (radius, position) => {
     material: defaultMaterial,
   });
   body.position.copy(position);
+  body.addEventListener("collide", playHitSound);
   world.addBody(body);
 
   objectsToUpdate.push({ mesh, body });
@@ -265,6 +280,7 @@ const createBox = (width, height, depth, position) => {
     material: defaultMaterial,
   });
   body.position.copy(position);
+  body.addEventListener("collide", playHitSound);
   world.addBody(body);
 
   objectsToUpdate.push({ mesh, body });
