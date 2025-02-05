@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 /**
  * Base
@@ -19,21 +20,25 @@ const scene = new THREE.Scene();
  * models
  */
 
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco/");
 const gltfLoader = new GLTFLoader();
-
+gltfLoader.setDRACOLoader(dracoLoader);
 gltfLoader.load(
-  "/models/FlightHelmet/glTF/FlightHelmet.gltf",
+  "/models/Duck/glTF-Draco/Duck.gltf",
   (gltf) => {
-    while (gltf.scene.children.length) {
+    /* while (gltf.scene.children.length) {
       // no for loop because items got removed from the array so the size always vary
-      scene.add(gltf.scene.children[0]);
-    }
+      //scene.add(gltf.scene.children[0]);
+      
+    } */
+    scene.add(gltf.scene);
   },
   () => {
     console.log("progress");
   },
-  () => {
-    console.log("error");
+  (error) => {
+    console.log(error);
   }
 );
 
