@@ -78,6 +78,16 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = -(event.clientY / sizes.height) * 2 + 1;
 });
 
+window.addEventListener("click", () => {
+  if (currentIntersect) {
+    currentIntersect.object === object1
+      ? console.log("click on object1")
+      : currentIntersect.object === object2
+      ? console.log("click on object2")
+      : console.log("click on object3");
+  }
+});
+
 /**
  * Camera
  */
@@ -109,6 +119,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 
+let currentIntersect = null;
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
@@ -128,6 +140,18 @@ const tick = () => {
 
   for (const intersect of intersects) {
     intersect.object.material.color.set("#0000ff");
+  }
+
+  if (intersects.length) {
+    if (!currentIntersect) {
+      console.log("mouse enter");
+    }
+    currentIntersect = intersects[0];
+  } else {
+    if (currentIntersect) {
+      console.log("mouse leave");
+    }
+    currentIntersect = null;
   }
   /*  const rayOrigin = new THREE.Vector3(-3, 0, 0);
   const rayDirection = new THREE.Vector3(10, 0, 0);
