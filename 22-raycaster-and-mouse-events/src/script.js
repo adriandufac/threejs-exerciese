@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
  * Base
@@ -115,6 +116,25 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 /**
+ * Models
+ */
+
+let model = null;
+const gltfLoader = new GLTFLoader();
+gltfLoader.load("./models/Duck/glTF-Binary/Duck.glb", (gltf) => {
+  model = gltf.scene;
+  console.log(model);
+
+  scene.add(model);
+});
+
+const ambientLight = new THREE.AmbientLight("#ffffff", 0.9);
+scene.add(ambientLight);
+const directionalLight = new THREE.DirectionalLight("#ffffff", 2.1);
+directionalLight.position.set(1, 2, 3);
+scene.add(directionalLight);
+
+/**
  * Animate
  */
 const clock = new THREE.Clock();
@@ -134,6 +154,17 @@ const tick = () => {
   raycaster.setFromCamera(mouse, camera);
   const objectsToTest = [object1, object2, object3];
   const intersects = raycaster.intersectObjects(objectsToTest);
+  if (model) {
+    const modelIntersects = raycaster.intersectObject(model);
+    //console.log(model);
+    if (modelIntersects.length) {
+      console.log("model intersects");
+      model.scale.set(1.1, 1.1, 1.1);
+    } else {
+      model.scale.set(1, 1, 1);
+    }
+  }
+
   for (const object of objectsToTest) {
     object.material.color.set("#ff0000");
   }
