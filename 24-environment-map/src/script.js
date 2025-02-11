@@ -3,12 +3,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader.js";
 /**
  * Loaders
  */
 const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const rgbeLoader = new RGBELoader();
+const exrLoader = new EXRLoader();
 
 /**
  * Base
@@ -58,7 +60,14 @@ scene.environment = environmentMap;
 scene.background = environmentMap; */
 
 // HDR
-rgbeLoader.load("./environmentMaps/blender2-2k.hdr", (environementMap) => {
+/* rgbeLoader.load("./environmentMaps/blender2-2k.hdr", (environementMap) => {
+  environementMap.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = environementMap;
+  scene.environment = environementMap;
+});*/
+
+// HDR (EXR)
+exrLoader.load("./environmentMaps/nvidiaCanvas-4k.exr", (environementMap) => {
   environementMap.mapping = THREE.EquirectangularReflectionMapping;
   scene.background = environementMap;
   scene.environment = environementMap;
