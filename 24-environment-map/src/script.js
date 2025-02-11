@@ -2,12 +2,13 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 /**
  * Loaders
  */
 const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
+const rgbeLoader = new RGBELoader();
 
 /**
  * Base
@@ -44,7 +45,8 @@ gui
   .min(0)
   .max(Math.PI * 2)
   .step(0.001);
-const environmentMap = cubeTextureLoader.load([
+
+/* const environmentMap = cubeTextureLoader.load([
   "./environmentMaps/2/px.png",
   "./environmentMaps/2/nx.png",
   "./environmentMaps/2/py.png",
@@ -53,7 +55,15 @@ const environmentMap = cubeTextureLoader.load([
   "./environmentMaps/2/nz.png",
 ]);
 scene.environment = environmentMap;
-scene.background = environmentMap;
+scene.background = environmentMap; */
+
+// HDR
+rgbeLoader.load("./environmentMaps/0/2k.hdr", (environementMap) => {
+  environementMap.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = environementMap;
+  scene.environment = environementMap;
+});
+
 /**
  * Torus Knot
  */
