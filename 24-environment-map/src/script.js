@@ -24,13 +24,33 @@ const scene = new THREE.Scene();
 /**
  * Environment map
  */
+
+scene.environmentIntensity = 4;
+scene.backgroundBlurriness = 0;
+scene.backgroundIntensity = 1;
+
+gui.add(scene, "environmentIntensity").min(0).max(10).step(0.001);
+gui.add(scene, "backgroundBlurriness").min(0).max(0.5).step(0.0001);
+gui.add(scene, "backgroundIntensity").min(0).max(10).step(0.001);
+gui
+  .add(scene.backgroundRotation, "y")
+  .name("backgroundRotationY")
+  .min(0)
+  .max(Math.PI * 2)
+  .step(0.001);
+gui
+  .add(scene.environmentRotation, "y")
+  .name("environmentRotationY")
+  .min(0)
+  .max(Math.PI * 2)
+  .step(0.001);
 const environmentMap = cubeTextureLoader.load([
-  "./environmentMaps/0/px.png",
-  "./environmentMaps/0/nx.png",
-  "./environmentMaps/0/py.png",
-  "./environmentMaps/0/ny.png",
-  "./environmentMaps/0/pz.png",
-  "./environmentMaps/0/nz.png",
+  "./environmentMaps/2/px.png",
+  "./environmentMaps/2/nx.png",
+  "./environmentMaps/2/py.png",
+  "./environmentMaps/2/ny.png",
+  "./environmentMaps/2/pz.png",
+  "./environmentMaps/2/nz.png",
 ]);
 scene.environment = environmentMap;
 scene.background = environmentMap;
