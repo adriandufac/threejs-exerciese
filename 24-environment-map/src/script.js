@@ -11,6 +11,7 @@ const gltfLoader = new GLTFLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const rgbeLoader = new RGBELoader();
 const exrLoader = new EXRLoader();
+const textureLoader = new THREE.TextureLoader();
 
 /**
  * Base
@@ -67,11 +68,21 @@ scene.background = environmentMap; */
 });*/
 
 // HDR (EXR)
-exrLoader.load("./environmentMaps/nvidiaCanvas-4k.exr", (environementMap) => {
+/* exrLoader.load("./environmentMaps/nvidiaCanvas-4k.exr", (environementMap) => {
   environementMap.mapping = THREE.EquirectangularReflectionMapping;
   scene.background = environementMap;
   scene.environment = environementMap;
-});
+}); */
+
+//LDR (JPG)
+const environmentMap = textureLoader.load(
+  "./environmentMaps/blockadesLabsSkybox/anime_art_style_japan_streets_with_cherry_blossom_.jpg"
+);
+environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+environmentMap.colorSpace = THREE.SRGBColorSpace;
+
+scene.background = environmentMap;
+scene.environment = environmentMap;
 
 /**
  * Torus Knot
