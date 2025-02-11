@@ -58,7 +58,7 @@ scene.environment = environmentMap;
 scene.background = environmentMap; */
 
 // HDR
-rgbeLoader.load("./environmentMaps/blender-2k.hdr", (environementMap) => {
+rgbeLoader.load("./environmentMaps/blender2-2k.hdr", (environementMap) => {
   environementMap.mapping = THREE.EquirectangularReflectionMapping;
   scene.background = environementMap;
   scene.environment = environementMap;
