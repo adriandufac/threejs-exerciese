@@ -3,11 +3,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 /**
  * Loaders
  */
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco/");
 const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
 const rgbeLoader = new RGBELoader();
 const textureLoader = new THREE.TextureLoader();
 
@@ -80,8 +84,13 @@ gui
 //shadow
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.far = 15;
+directionalLight.shadow.normalBias = 0.021;
+directionalLight.shadow.bias = 0;
 directionalLight.shadow.mapSize.set(1024, 1024);
 gui.add(directionalLight, "castShadow");
+gui.add(directionalLight.shadow, "normalBias").min(-0.05).max(0.05).step(0.001);
+
+gui.add(directionalLight.shadow, "bias").min(-0.05).max(0.05).step(0.001);
 
 //Helper
 const directionalLightHelper = new THREE.CameraHelper(
@@ -97,8 +106,15 @@ directionalLight.target.updateWorldMatrix();
  * Models
  */
 // Helmet
-gltfLoader.load("/models/FlightHelmet/glTF/FlightHelmet.gltf", (gltf) => {
+/* gltfLoader.load("/models/FlightHelmet/glTF/FlightHelmet.gltf", (gltf) => {
   gltf.scene.scale.set(10, 10, 10);
+  scene.add(gltf.scene);
+
+  updateAllMaterials();
+}); */
+gltfLoader.load("/models/myhamburger.glb", (gltf) => {
+  gltf.scene.scale.set(0.4, 0.4, 0.4);
+  gltf.scene.position.set(0, 2.5, 0);
   scene.add(gltf.scene);
 
   updateAllMaterials();
