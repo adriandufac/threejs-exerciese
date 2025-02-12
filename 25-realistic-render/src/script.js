@@ -9,6 +9,7 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
  */
 const gltfLoader = new GLTFLoader();
 const rgbeLoader = new RGBELoader();
+const textureLoader = new THREE.TextureLoader();
 
 /**
  * Base
@@ -102,6 +103,57 @@ gltfLoader.load("/models/FlightHelmet/glTF/FlightHelmet.gltf", (gltf) => {
 
   updateAllMaterials();
 });
+
+// Floor
+
+const floorColorTexture = textureLoader.load(
+  "/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_diff_1k.jpg"
+);
+floorColorTexture.colorSpace = THREE.SRGBColorSpace;
+const floorNormalTexture = textureLoader.load(
+  "/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_nor_gl_1k.png"
+);
+const floorAORoughnessMetalnessTexture = textureLoader.load(
+  "/textures/wood_cabinet_worn_long/wood_cabinet_worn_long_arm_1k.jpg"
+);
+
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(8, 8),
+  new THREE.MeshStandardMaterial({
+    map: floorColorTexture,
+    normalMap: floorNormalTexture,
+    aoMap: floorAORoughnessMetalnessTexture,
+    roughnessMap: floorAORoughnessMetalnessTexture,
+    metalnessMap: floorAORoughnessMetalnessTexture,
+  })
+);
+floor.rotation.x = -Math.PI * 0.5;
+scene.add(floor);
+
+//back wall
+const backWallColorTexture = textureLoader.load(
+  "/textures/castle_brick_broken_06/castle_brick_broken_06_diff_1k.jpg"
+);
+backWallColorTexture.colorSpace = THREE.SRGBColorSpace;
+const backWallNormalTexture = textureLoader.load(
+  "/textures/castle_brick_broken_06/castle_brick_broken_06_nor_gl_1k.png"
+);
+const backWallAORoughnessMetalnessTexture = textureLoader.load(
+  "/textures/castle_brick_broken_06/castle_brick_broken_06_arm_1k.jpg"
+);
+
+const backWall = new THREE.Mesh(
+  new THREE.PlaneGeometry(8, 8),
+  new THREE.MeshStandardMaterial({
+    map: backWallColorTexture,
+    normalMap: backWallNormalTexture,
+    aoMap: backWallAORoughnessMetalnessTexture,
+    roughnessMap: backWallAORoughnessMetalnessTexture,
+    metalnessMap: backWallAORoughnessMetalnessTexture,
+  })
+);
+backWall.position.set(0, 4, -4);
+scene.add(backWall);
 
 /**
  * Sizes
