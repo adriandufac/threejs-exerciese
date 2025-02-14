@@ -17,8 +17,9 @@ export default class Renderer {
       canvas: this.canvas,
       antialias: true,
     });
-    this.instance.physicallyCorrectLights = true;
-    this.instance.outputEncoding = THREE.sRGBEncoding;
+    /* this.instance.physicallyCorrectLights = true;
+    this.instance.outputEncoding = THREE.sRGBEncoding; */
+    this.instance.toneMapping = THREE.CineonToneMapping;
     this.instance.toneMappingExposure = 1.75;
     this.instance.shadowMap.enabled = true;
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -29,6 +30,13 @@ export default class Renderer {
 
   resize() {
     this.instance.setSize(this.sizes.width, this.sizes.height);
+    this.instance.setPixelRatio(this.sizes.pixelRatio);
+    console.log(
+      "renderer resize",
+      this.sizes.width,
+      this.sizes.height,
+      this.sizes.pixelRatio
+    );
   }
 
   update() {

@@ -3,6 +3,7 @@ import Sizes from "./Utils/Sizes.js";
 import Time from "./Utils/Time.js";
 import Camera from "./Camera.js";
 import Renderer from "./Renderer.js";
+import World from "./World/World.js";
 
 let instance = null;
 
@@ -21,6 +22,7 @@ export default class Experience {
     this.scene = new THREE.Scene();
     this.camera = new Camera();
     this.renderer = new Renderer();
+    this.world = new World();
 
     // resize event
     this.sizes.on("resize", () => {
@@ -35,6 +37,7 @@ export default class Experience {
 
   // propagate from experience to children
   resize() {
+    console.log("resize triggered");
     this.camera.resize();
     this.renderer.resize();
   }
