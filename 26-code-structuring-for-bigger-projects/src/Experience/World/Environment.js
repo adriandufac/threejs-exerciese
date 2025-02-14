@@ -29,7 +29,7 @@ export default class Environment {
     this.environmentMap.texture = this.resources.items["environmentMapTexture"];
     this.environmentMap.colorSpace = THREE.SRGBColorSpace;
     this.scene.environment = this.environmentMap.texture;
-    this.scene.background = this.environmentMap.texture;
+    //this.scene.background = this.environmentMap.texture;
 
     this.environmentMap.updateMaterial = () => {
       this.scene.traverse((child) => {
