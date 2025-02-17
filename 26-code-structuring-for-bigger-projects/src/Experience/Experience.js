@@ -51,4 +51,33 @@ export default class Experience {
     this.world.update();
     this.renderer.update();
   }
+  destroy() {
+    this.sizes.off("resize");
+    this.sizes.off("tick");
+
+    //Traverse the whole scene
+    this.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        //dispose the geometry
+        child.geometry.dispose();
+        //dispose the material
+        for (const key in child.material) {
+          const value = child.material[key];
+          if (value && typeof value.dispose === "function") {
+            value.dispose();
+          }
+        }
+      }
+    });
+    //controls
+    this.camera.controls.dispose();
+
+    //renderer
+    this.renderer.instance.dispose();
+
+    //debug
+    if (this.debug.active) {
+      this.debug.ui.destroy;
+    }
+  }
 }
