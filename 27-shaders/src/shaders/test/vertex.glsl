@@ -7,7 +7,8 @@ uniform float uTime;
 
 
 attribute vec3 position;// position coming from geometry
-
+attribute vec2 uv;
+varying vec2 vUv;
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -17,5 +18,5 @@ void main() {
     vec4 projectionPosition = projectionMatrix * viewPosition;
 
     gl_Position = projectionPosition;
-
+    vUv = uv;
 }
