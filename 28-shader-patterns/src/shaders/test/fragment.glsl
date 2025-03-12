@@ -59,13 +59,12 @@ void main()
     float strength = (strengthx1 * strengthy1)+ (strengthx2 * strengthy2); */
 
     //pattern15
-    float strengthx = mod((vUv.x * 10.0), 1.0);
-    float strengthx1 = step(0.8, strengthx);
-    float strengthx2 = step(0.3, strengthx);
-    float strengthy = mod(vUv.y * 10.0 , 1.0);
-    float strengthy1 = step(0.3, strengthy);
-    float strengthy2 = step(0.8, strengthy);
-    float strength = (strengthx1 * strengthy1)+ (strengthx2 * strengthy2);
+    float barX = step(0.4 , mod(vUv.x * 10.0, 1.0));
+    barX *= step(0.8 , mod(vUv.y * 10.0 +0.2, 1.0));
 
+    float barY = step(0.8 , mod(vUv.x * 10.0 + 0.2, 1.0));
+    barY *= step(0.4 , mod(vUv.y * 10.0, 1.0));
+
+    float strength = barX + barY;
         gl_FragColor = vec4(vec3(strength), 1.0);
 }
