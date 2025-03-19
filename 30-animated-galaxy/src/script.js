@@ -48,6 +48,7 @@ const generateGalaxy = () => {
 
   const positions = new Float32Array(parameters.count * 3);
   const colors = new Float32Array(parameters.count * 3);
+  const scales = new Float32Array(parameters.count);
 
   const insideColor = new THREE.Color(parameters.insideColor);
   const outsideColor = new THREE.Color(parameters.outsideColor);
@@ -88,10 +89,14 @@ const generateGalaxy = () => {
     colors[i3] = mixedColor.r;
     colors[i3 + 1] = mixedColor.g;
     colors[i3 + 2] = mixedColor.b;
+
+    //scale
+    scales[i] = Math.random();
   }
 
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute("aScale", new THREE.BufferAttribute(scales, 1));
 
   /**
    * Material
@@ -102,6 +107,9 @@ const generateGalaxy = () => {
     vertexColors: true,
     vertexShader: galaxyVertexShader,
     fragmentShader: galaxyFragmentShader,
+    uniforms: {
+      uSize: { value: 2.0 * renderer.getPixelRatio() },
+    },
   });
 
   /**
@@ -111,8 +119,12 @@ const generateGalaxy = () => {
   scene.add(points);
 };
 
-generateGalaxy();
-
+gui
+  .add(parameters, "size")
+  .min(0.001)
+  .max(3.0)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
 gui
   .add(parameters, "count")
   .min(100)
@@ -195,6 +207,11 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+/**
+ * Generate Galaxy
+ */
+generateGalaxy();
 
 /**
  * Animate
