@@ -108,6 +108,7 @@ const generateGalaxy = () => {
     vertexShader: galaxyVertexShader,
     fragmentShader: galaxyFragmentShader,
     uniforms: {
+      uTime: { value: 0 },
       uSize: { value: 20.0 * renderer.getPixelRatio() },
     },
   });
@@ -223,6 +224,9 @@ const tick = () => {
 
   // Update controls
   controls.update();
+
+  // Update material
+  material.uniforms.uTime.value = elapsedTime;
 
   // Render
   renderer.render(scene, camera);
