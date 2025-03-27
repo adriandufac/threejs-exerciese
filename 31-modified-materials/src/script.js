@@ -69,6 +69,10 @@ const material = new THREE.MeshStandardMaterial({
   normalMap: normalTexture,
 });
 
+const depthMaterial = new THREE.MeshDepthMaterial({
+  depthPacking: THREE.RGBADepthPacking,
+});
+
 const customUniforms = {
   uTime: { value: 0 },
 };
@@ -97,6 +101,18 @@ material.onBeforeCompile = (shader) => {
   );
 };
 
+depthMaterial.onBeforeCompile = (shader) => {
+  shader.vertexShader = shader.vertexShader.replace(
+    "#include <begin_vertex>",
+    `#include <begin_vertex>
+
+        float angle = (position.y + uTime) * 0.5;
+        mat2 rotateMatrix = get2dRotateMatrix(angle);
+        transformed.xz = rotateMatrix * transformed.xz;
+        `
+  );
+};
+
 /**
  * Models
  */
@@ -105,6 +121,7 @@ gltfLoader.load("/models/LeePerrySmith/LeePerrySmith.glb", (gltf) => {
   const mesh = gltf.scene.children[0];
   mesh.rotation.y = Math.PI * 0.5;
   mesh.material = material;
+  mesh.customDepthMaterial = depthMaterial;
   scene.add(mesh);
 
   // Update materials
